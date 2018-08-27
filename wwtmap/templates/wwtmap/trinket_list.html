@@ -9,19 +9,22 @@
         ymaps.ready(init);
 function init() {
     var myMap = new ymaps.Map('map', {
-        center: [55.753994, 37.622093],
+        center: [56.852593, 53.204843],         //Координаты Ижевска, как центра карты
         zoom: 3
     });
 
-
-    var myPlacemark1 = new ymaps.Placemark([55.8, 37.6],
-         {
+/*
+    var myPlacemark1 = new ymaps.Placemark(
+        [41.700660, 2.848520],
+        {
             balloonContentHeader: "Балун метки",
             balloonContentBody: "Содержимое <em>балуна</em> метки",
             balloonContentFooter: "Подвал",
-            hintContent: "Хинт метки"},
+            hintContent: "Lloret de mar"},
          {
-            preset: 'islands#icon',
+             iconCaption : 'Lloret de mar'},
+         {
+            preset: 'islands#greenDotIconWithCaption',
             iconColor: '#0011b6'
          }
     );
@@ -39,23 +42,41 @@ function init() {
             }
         )
     );
-
+*/
     //myPlacemark1.openBallon();
 
     //var myPlacemark2 = new ymaps.Placemark([44.6, 29.5]);
     //myPlacemark2.iconCaption = 'city2';
     //myPlacemark2.preset = 'islands#greenDotIconWithCaption';
-    myMap.geoObjects.add(new ymaps.Placemark([44.6, 29.5], {iconCaption : 'city2'}, {preset: 'islands#greenDotIconWithCaption'}));
 
-    var myPl3 = new ymaps.Placemark([53.1, 44.2]);
-    myPl3.name = 'city3';
+//    myMap.geoObjects.add(new ymaps.Placemark([44.6, 29.5], {iconCaption : 'city2'}, {preset: 'islands#greenDotIconWithCaption'}));
 
-    var myPl4 = new ymaps.Placemark([40.7, 33.6]);
-    myPl4.name = 'city4';
+    //var myPl3 = new ymaps.Placemark([53.1, 44.2]);
+    //myPl3.name = 'city3';
+
+    //var myPl4 = new ymaps.Placemark([40.7, 33.6]);
+    //myPl4.name = 'city4';
 
     //myMap.geoObjects.add(myPlacemark2);
-    myMap.geoObjects.add(myPl3);
-    myMap.geoObjects.add(myPl4);
+    //myMap.geoObjects.add(myPl3);
+    //myMap.geoObjects.add(myPl4);
+
+    {% for trink in trinkets %}
+        myMap.geoObjects.add(new ymaps.Placemark(
+            [{{ trink.coords }}],
+            { balloonContentHeader: "{{ trink.city }}",
+            balloonContentBody: "Country: {{trink.country }}</br> City: {{trink.city}}</br> <img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" height=\"150\">",
+            balloonContentFooter: "Author: {{ trink.author }}</br> (Date: {{ trink.year }})",
+            hintContent: "{{ trink.city }} - {{ trink.year }}"},
+            {preset: 'islands#greenDotIconWithCaption',
+        {% if trink.author == 'Me' %}
+            iconColor: '#00b65f' }
+        {% else %}
+            iconColor: '#b61528' }
+        {% endif %}
+            ));
+    {% endfor %}
+
 
 /*
     // Поиск координат центра города Чайковского, например.
@@ -144,7 +165,9 @@ function init() {
     <div class="author"> Author: {{ trinket.author }}</div>
     <div class="country"> Country: {{trinket.country }}</div>
     <div class="city"> City: {{trinket.city}}</div>
-    <div class="year"> Date: {{ trinket.year }}</div><br>
+    <div class="year"> Date: {{ trinket.year }}</div>
+    <div class="coords"> Coords: {{ trinket.coords }}</div>
+    <br>
     {%  if trinket.picture %}
         <img src="{{ MEDIA_URL }}{{ trinket.picture.url }}" height="150">
     {% endif %}
