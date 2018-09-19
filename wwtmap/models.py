@@ -10,7 +10,10 @@ class Trinkets(models.Model):
 #    picture = models.CharField(max_length=30)
     picture = models.ImageField(upload_to='imgs', height_field=None, width_field=None,
                                    max_length=50)
+
     coords = models.CharField(max_length = 20)
 
+    def image_tag(self):
+        return '<img src=""' + str(self.picture) + 'width="150" height="150" />'
 
 
