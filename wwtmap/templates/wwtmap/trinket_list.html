@@ -6,166 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/style.css">
 
     <title>Trinket Gold Collection</title>
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript">
-    </script>
-    <script type="text/javascript">
-        ymaps.ready(init);
-function init() {
-    var myMap = new ymaps.Map('map', {
-        center: [56.852593, 53.204843],         //Координаты Ижевска, как центра карты
-        zoom: 3
-    });
-
-/*
-    var myPlacemark1 = new ymaps.Placemark(
-        [41.700660, 2.848520],
-        {
-            balloonContentHeader: "Балун метки",
-            balloonContentBody: "Содержимое <em>балуна</em> метки",
-            balloonContentFooter: "Подвал",
-            hintContent: "Lloret de mar"},
-         {
-             iconCaption : 'Lloret de mar'},
-         {
-            preset: 'islands#greenDotIconWithCaption',
-            iconColor: '#0011b6'
-         }
-    );
-    myMap.geoObjects.add(myPlacemark1);
-
-    myMap.geoObjects.add(new ymaps.Placemark(
-            [57.684758, 38.738521], {
-                balloonContent: 'цвет <strong>воды пляжа бонди</strong>'
-            }, {
-                preset: 'islands#icon',
-                iconColor: '#b61528'
-            }, {
-                name: 'Moscow',
-                description: 'Автор: Я<br>Год: 2018'
-            }
-        )
-    );
-*/
-    //myPlacemark1.openBallon();
-
-    //var myPlacemark2 = new ymaps.Placemark([44.6, 29.5]);
-    //myPlacemark2.iconCaption = 'city2';
-    //myPlacemark2.preset = 'islands#greenDotIconWithCaption';
-
-//    myMap.geoObjects.add(new ymaps.Placemark([44.6, 29.5], {iconCaption : 'city2'}, {preset: 'islands#greenDotIconWithCaption'}));
-
-    //var myPl3 = new ymaps.Placemark([53.1, 44.2]);
-    //myPl3.name = 'city3';
-
-    //var myPl4 = new ymaps.Placemark([40.7, 33.6]);
-    //myPl4.name = 'city4';
-
-    //myMap.geoObjects.add(myPlacemark2);
-    //myMap.geoObjects.add(myPl3);
-    //myMap.geoObjects.add(myPl4);
-
-    {% for trink in trinkets %}
-        myMap.geoObjects.add(new ymaps.Placemark(
-            [{{ trink.coords }}],
-            { balloonContentHeader: "{{ trink.city }}",
-            balloonContentBody: "Country: {{trink.country }}</br> City: {{trink.city}}</br> <img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" height=\"150\">",
-            balloonContentFooter: "Author: {{ trink.author }}</br> (Date: {{ trink.year }})",
-            hintContent: "{{ trink.city }} - {{ trink.year }}"},
-            {preset: 'islands#greenDotIconWithCaption',
-        {% if trink.author == 'Me' %}
-            iconColor: '#00b65f' }
-        {% else %}
-            iconColor: '#b61528' }
-        {% endif %}
-            ));
-    {% endfor %}
-
-
-/*
-    // Поиск координат центра города Чайковского, например.
-    ymaps.geocode('Чайковский', {
-        results: 1
-    }).then(function (res) {
-            // Выбираем первый результат геокодирования.
-            var firstGeoObject = res.geoObjects.get(0),
-                // Координаты геообъекта.
-                coords = firstGeoObject.geometry.getCoordinates(),
-                // Область видимости геообъекта.
-                bounds = firstGeoObject.properties.get('boundedBy');
-
-            firstGeoObject.options.set('preset', 'islands#darkBlueDotIconWithCaption');
-            // Получаем строку с адресом и выводим в иконке геообъекта.
-            firstGeoObject.properties.set('iconCaption', firstGeoObject.getAddressLine());
-
-            // Добавляем первый найденный геообъект на карту.
-            myMap.geoObjects.add(firstGeoObject);
-            // Масштабируем карту на область видимости геообъекта.
-            myMap.setBounds(bounds, {
-                // Проверяем наличие тайлов на данном масштабе.
-                checkZoomRange: true
-            });
-
-            /**
-             * Все данные в виде javascript-объекта.
-             */
-  //          console.log('Все данные геообъекта: ', firstGeoObject.properties.getAll());
-            /**
-             * Метаданные запроса и ответа геокодера.
-             * @see https://api.yandex.ru/maps/doc/geocoder/desc/reference/GeocoderResponseMetaData.xml
-             */
-  //          console.log('Метаданные ответа геокодера: ', res.metaData);
-            /**
-             * Метаданные геокодера, возвращаемые для найденного объекта.
-             * @see https://api.yandex.ru/maps/doc/geocoder/desc/reference/GeocoderMetaData.xml
-             */
-  //          console.log('Метаданные геокодера: ', firstGeoObject.properties.get('metaDataProperty.GeocoderMetaData'));
-            /**
-             * Точность ответа (precision) возвращается только для домов.
-             * @see https://api.yandex.ru/maps/doc/geocoder/desc/reference/precision.xml
-             */
-   //         console.log('precision', firstGeoObject.properties.get('metaDataProperty.GeocoderMetaData.precision'));
-            /**
-             * Тип найденного объекта (kind).
-             * @see https://api.yandex.ru/maps/doc/geocoder/desc/reference/kind.xml
-             */
-    //        console.log('Тип геообъекта: %s', firstGeoObject.properties.get('metaDataProperty.GeocoderMetaData.kind'));
-    //        console.log('Название объекта: %s', firstGeoObject.properties.get('name'));
-    //        console.log('Описание объекта: %s', firstGeoObject.properties.get('description'));
-    //        console.log('Полное описание объекта: %s', firstGeoObject.properties.get('text'));
-            /**
-            * Прямые методы для работы с результатами геокодирования.
-            * @see https://tech.yandex.ru/maps/doc/jsapi/2.1/ref/reference/GeocodeResult-docpage/#getAddressLine
-            */
-    //        console.log('\nГосударство: %s', firstGeoObject.getCountry());
-    //        console.log('Населенный пункт: %s', firstGeoObject.getLocalities().join(', '));
-    //       console.log('Адрес объекта: %s', firstGeoObject.getAddressLine());
-    //        console.log('Наименование здания: %s', firstGeoObject.getPremise() || '-');
-    //        console.log('Номер здания: %s', firstGeoObject.getPremiseNumber() || '-');
-
-            /**
-             * Если нужно добавить по найденным геокодером координатам метку со своими стилями и контентом балуна, создаем новую метку по координатам найденной и добавляем ее на карту вместо найденной.
-             */
-            /**
-             var myPlacemark = new ymaps.Placemark(coords, {
-             iconContent: 'моя метка',
-             balloonContent: 'Содержимое балуна <strong>моей метки</strong>'
-             }, {
-             preset: 'islands#violetStretchyIcon'
-             });
-
-             myMap.geoObjects.add(myPlacemark);
-             */
-    //    });
-}
-    </script>
 
 </head>
 <body>
-<h1> Брелочки </h1>
-
-    <div id="map" style="height:900px"></div>
+<header>
+    <a href="trinket_list.html">Брелки</a>
+    <a href="wwmap.html">Карта</a>
+    <a href="mixview.html">Микс</a>
+</header>
 
 <div class="container" style="margin-top:30px">
 

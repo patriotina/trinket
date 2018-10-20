@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/style.css">
+
+    <title>Trinket Gold Collection</title>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+        function init() {
+            var myMap = new ymaps.Map('map', {
+                center: [56.852593, 53.204843],         //Координаты Ижевска, как центра карты
+                zoom: 3
+            });
+
+
+            {% for trink in trinkets %}
+                myMap.geoObjects.add(new ymaps.Placemark(
+                    [{{ trink.coords }}],
+                    { balloonContentHeader: "{{ trink.city }}",
+                    balloonContentBody: "Country: {{trink.country }}</br> City: {{trink.city}}</br> <img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" height=\"150\">",
+                    balloonContentFooter: "Author: {{ trink.author }}</br> (Date: {{ trink.year }})",
+                    hintContent: "{{ trink.city }} - {{ trink.year }}"},
+                    {preset: 'islands#greenDotIconWithCaption',
+                {% if trink.author == 'Me' %}
+                    iconColor: '#00b65f' }
+                {% else %}
+                    iconColor: '#b61528' }
+                {% endif %}
+                    ));
+            {% endfor %}
+        }
+    </script>
+
+</head>
+<body>
+<header>
+    <a href="trinket_list.html">Брелки</a>
+    <a href="wwmap.html">Карта</a>
+    <a href="mixview.html">Микс</a>
+</header>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="container" style="margin-top:30px">
+
+            <div class="row">
+                {%  for trinket in trinkets %}
+                <div class="col-sm-6 col-md-6 col-lg-6">
+                    <div class="card">
+
+                        <img class="card-img" alt="Card header image" src="{{ MEDIA_URL }}{{ trinket.picture.url }}" width="250px">
+                        <div class="card-body">
+                            <h5 class="card-title">Country: {{trinket.country }}</h5>
+                            <p class="card-text">City: {{trinket.city}}</p>
+                            <p class="card-text">Author: {{ trinket.author }}</p>
+                            <p class="card-text">Date: {{ trinket.city }}</p>
+                        </div>
+                    </div>
+                </div>
+             {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8 align-self-start">
+        <div id="map" style="height: 600px"></div>
+    </div>
+</div>
+</body>
+</html>
