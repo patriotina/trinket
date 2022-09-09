@@ -8,7 +8,7 @@ def trinket_list(request):
 
 def wwmap(request):
     trinkets = Trinkets.objects.all()
-    return render(request, 'wwtmap/wwmap.html', {'trinkets':trinkets})
+    return render(request, 'wwtmap/wwmap_cluster.html', {'trinkets':trinkets})
 
 def mixview(request):
     trinkets = Trinkets.objects.all()

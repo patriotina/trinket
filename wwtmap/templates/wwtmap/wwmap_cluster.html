@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="../../static/style.css">
+
+    <title>Trinket Gold Collection</title>
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+        ymaps.ready(init);
+
+        function init() {
+            var myMap = new ymaps.Map('map', {
+                center: [56.852593, 53.204843],         //Координаты Ижевска, как центра карты
+                zoom: 3
+            }),
+            clusterer = new ymaps.Clusterer({
+                preset: 'islands#nightClusterIcons', 
+                groupByCoordinates: false,
+                clusterDisableClickZoom: true,
+                    clusterHideIconOnBalloonOpen: false,
+                    geoObjectHideIconOnBalloonOpen: false
+            }),
+    
+            geoObjects = [];
+            
+            let tr;
+            {% for trink in trinkets %}
+            tr = new ymaps.Placemark(
+                [{{ trink.coords }}],
+                {balloonContentHeader: "{{ trink.city }}",
+                    balloonContentBody: "<img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" style=\"float: left; margin: 3px;\" height=\"150\"> Country: {{trink.country }}</br> City: {{trink.city}}</br> ",
+                    balloonContentFooter: "Author: {{ trink.author }}</br> (Date: {{ trink.year }})",
+                    hintContent: "{{ trink.city }} - {{ trink.year }}",
+                    clusterCaption: "{{ trink.city }} - {{ trink.author }}"
+                }, 
+                {preset: 'islands#greenDotIconWithCaption',
+                    {% if trink.author == 'Me' %}
+                        iconColor: '#00b65f' },
+                    {% else %}
+                        iconColor: '#b61528' },
+                    {% endif %}
+           
+            );
+            console.log(tr);
+            geoObjects.push(tr);
+            {% endfor %}
+
+            clusterer.options.set({
+                gridSize: 80,
+                clusterDisableClickZoom: true
+            });
+            clusterer.add(geoObjects);
+            myMap.geoObjects.add(clusterer);
+            myMap.setBounds(clusterer.getBounds(), {
+                checkZoomRange: true
+            });
+        };
+    </script>
+
+</head>
+<body>
+<header>
+    <a href="trinket_list.html">Брелки</a>
+    <a href="wwmap.html">Карта</a>
+    <a href="mixview.html">Микс</a>
+</header>
+    <div id="map" style="height: 700px"></div>
+
+</div>
+</body>
+</html>

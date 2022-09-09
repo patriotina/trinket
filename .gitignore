@@ -1,5 +1,6 @@
 .idea/
 venv/
+trvenv/
 */__pycache__/
 */**/__pycache__/
 
