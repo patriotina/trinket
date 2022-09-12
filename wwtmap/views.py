@@ -13,3 +13,8 @@ def wwmap(request):
 def mixview(request):
     trinkets = Trinkets.objects.all()
     return render(request, 'wwtmap/mixview.html', {'trinkets':trinkets})
+
+def statistic(request):
+    trinkets = Trinkets.objects.order_by().values('country').distinct()
+
+    return render(request, 'wwtmap/stat.html', {'trinkets':trinkets})
