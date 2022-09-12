@@ -22,20 +22,22 @@
             clusterer = new ymaps.Clusterer({
                 preset: 'islands#nightClusterIcons', 
                 groupByCoordinates: false,
+                clusterBalloonContentLayout: 'cluster#balloonAccordion',
+                clusterBalloonContentLayoutWidth: 300,
+                clusterBalloonContentLayoutHeight: 250,
                 clusterDisableClickZoom: true,
-                    clusterHideIconOnBalloonOpen: false,
-                    geoObjectHideIconOnBalloonOpen: false
+                clusterHideIconOnBalloonOpen: false,
+                geoObjectHideIconOnBalloonOpen: false
             }),
     
-            geoObjects = [];
-            
+            geoObjects = [];            
             let tr;
             {% for trink in trinkets %}
             tr = new ymaps.Placemark(
                 [{{ trink.coords }}],
                 {balloonContentHeader: "{{ trink.city }}",
-                    balloonContentBody: "<img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" style=\"float: left; margin: 3px;\" height=\"150\"> Country: {{trink.country }}</br> City: {{trink.city}}</br> ",
-                    balloonContentFooter: "Author: {{ trink.author }}</br> (Date: {{ trink.year }})",
+                    balloonContentBody: "<img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" style=\"float: left; margin: 3px;\" height=\"150\"> <strong>Country: {{trink.country }}</strong></br> City: {{trink.city}}</br> Author: {{ trink.author }}</br>",
+                    balloonContentFooter: "(Date: {{ trink.year }})",
                     hintContent: "{{ trink.city }} - {{ trink.year }}",
                     clusterCaption: "{{ trink.city }} - {{ trink.author }}"
                 }, 
@@ -45,7 +47,6 @@
                     {% else %}
                         iconColor: '#b61528' },
                     {% endif %}
-           
             );
             console.log(tr);
             geoObjects.push(tr);
@@ -62,16 +63,14 @@
             });
         };
     </script>
-
 </head>
-<body>
-<header>
-    <a href="trinket_list.html">Брелки</a>
-    <a href="wwmap.html">Карта</a>
-    <a href="mixview.html">Микс</a>
-</header>
-    <div id="map" style="height: 700px"></div>
-
-</div>
-</body>
+    <body>
+        <header>
+            <a href="trinket_list.html">Брелки</a>
+            <a href="wwmap.html">Карта</a>
+            <a href="mixview.html">Микс</a>
+        </header>
+        <div id="map" style="height: 700px"></div>
+        
+    </body>
 </html>

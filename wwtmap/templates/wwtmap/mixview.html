@@ -21,9 +21,12 @@
             clusterer = new ymaps.Clusterer({
                 preset: 'islands#nightClusterIcons', 
                 groupByCoordinates: false,
+                clusterBalloonContentLayout: 'cluster#balloonAccordion',
+                clusterBalloonContentLayoutWidth: 300,
+                clusterBalloonContentLayoutHeight: 250,
                 clusterDisableClickZoom: true,
-                    clusterHideIconOnBalloonOpen: false,
-                    geoObjectHideIconOnBalloonOpen: false
+                clusterHideIconOnBalloonOpen: false,
+                geoObjectHideIconOnBalloonOpen: false
             }),
     
             geoObjects = [];            
@@ -32,11 +35,11 @@
             tr = new ymaps.Placemark(
                 [{{ trink.coords }}],
                 {balloonContentHeader: "{{ trink.city }}",
-                    balloonContentBody: "<img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" style=\"float: left; margin: 3px;\" height=\"150\"> Country: {{trink.country }}</br> City: {{trink.city}}</br> ",
-                    balloonContentFooter: "Author: {{ trink.author }}</br> (Date: {{ trink.year }})",
+                    balloonContentBody: "<img src=\"{{ MEDIA_URL }}{{ trink.picture.url }}\" style=\"float: left; margin: 3px;\" height=\"150\"> <strong>Country: {{trink.country }}</strong></br> City: {{trink.city}}</br> Author: {{ trink.author }}</br>",
+                    balloonContentFooter: "(Date: {{ trink.year }})",
                     hintContent: "{{ trink.city }} - {{ trink.year }}",
                     clusterCaption: "{{ trink.city }} - {{ trink.author }}"
-                }, 
+                },
                 {preset: 'islands#greenDotIconWithCaption',
                     {% if trink.author == 'Me' %}
                         iconColor: '#00b65f' },
