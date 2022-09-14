@@ -17,9 +17,49 @@
             <a href="mixview.html">Микс</a>
             <a href="stat.html">Статистика</a>
         </header>
-        <strong>Statistics...</strong></br>
-        {% for trinket in trinkets %}
-            {{ trinket.country }} </br>
-        {% endfor %}
+        
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <strong>Statistics...</strong></br>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col col">
+                    <strong>Countries: </strong>
+                    <ul class="list-group">
+                    {% for trinket in trinkets %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ trinket.country }}
+                            <span class="badge bg-primary rounded-pill">{{ trinket.total }}</span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="col col">
+                    <strong>Cities: </strong>
+                    <ul class="list-group">
+                        {% for city in cities %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ city.city }}
+                                <span class="badge bg-primary rounded-pill">{{ city.total }}</span>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                </div>
+                <div class="col col">
+                    <strong>Persons: </strong>
+                    <ul class="list-group">
+                        {% for person in people %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ person.author }}
+                                <span class="badge bg-primary rounded-pill">{{ person.total }}</span>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                </div>
+            </div>
+        </div>
     </body>
 </html>

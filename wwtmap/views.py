@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Count
 from .models import Trinkets
 # Create your views here.
 
@@ -15,6 +16,8 @@ def mixview(request):
     return render(request, 'wwtmap/mixview.html', {'trinkets':trinkets})
 
 def statistic(request):
-    trinkets = Trinkets.objects.order_by().values('country').distinct()
+    trinkets = Trinkets.objects.values('country').annotate(total=Count('id')).order_by('-total')
+    people = Trinkets.objects.values('author').annotate(total=Count('id')).order_by('-total')
+    cities = Trinkets.objects.values('city').annotate(total=Count('id')).order_by('-total')
 
-    return render(request, 'wwtmap/stat.html', {'trinkets':trinkets})
+    return render(request, 'wwtmap/stat.html', {'trinkets':trinkets, 'people':people, 'cities':cities})
