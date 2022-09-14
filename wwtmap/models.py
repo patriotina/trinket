@@ -15,5 +15,3 @@ class Trinkets(models.Model):
 
     def image_tag(self):
         return '<img src=""' + str(self.picture) + 'width="150" height="150" />'
-
-

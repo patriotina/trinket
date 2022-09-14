@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+            <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel="stylesheet" href="../../static/style.css">
+
+        <title>Trinket Gold Collection</title>
+    </head>
+    <body>
+        <header>
+            <a href="trinket_list.html">Брелки</a>
+            <a href="wwmap.html">Карта</a>
+            <a href="mixview.html">Микс</a>
+            <a href="stat.html">Статистика</a>
+        </header>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <strong>Statistics...</strong></br>
+                </div>
+            </div>
+            <div class="row">
+                
+                <div class="col col">
+                    <strong>Countries: </strong>
+                    <ul class="list-group">
+                    {% for trinket in trinkets %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ trinket.country }}
+                            <span class="badge bg-primary rounded-pill">{{ trinket.total }}</span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <div class="col col">
+                    <strong>Cities: </strong>
+                    <ul class="list-group">
+                        {% for city in cities %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ city.city }}
+                                <span class="badge bg-primary rounded-pill">{{ city.total }}</span>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                </div>
+                <div class="col col">
+                    <strong>Persons: </strong>
+                    <ul class="list-group">
+                        {% for person in people %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ person.author }}
+                                <span class="badge bg-primary rounded-pill">{{ person.total }}</span>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
